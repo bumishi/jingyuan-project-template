@@ -1,0 +1,71 @@
+from pydantic import BaseModel, ConfigDict, Field
+from sqlalchemy.orm import relationship, Mapped, mapped_column
+from core.database import Base
+from core.data_types import DatetimeStr,DateStr
+from sqlalchemy import String, Boolean, Integer,DateTime,Text,BigInteger,Numeric,func,Date
+from datetime import datetime,date
+from decimal import Decimal
+from typing import Optional
+
+class {{ entity }}(Base):
+    __tablename__ = "{{ table.table_name }}"
+    __table_args__ = ({'comment': '{{ table.comment }}'})
+    {% for field in table.fields %}
+    {{ field.name }}: Mapped[{{ field.py_type }}] = mapped_column({{ field.sqlalchemy_type }}{% if field.is_pk %}, primary_key={{ field.is_pk }}{% endif %},comment='{{ field.comment }}'{% if field.name=='create_time' %},server_default=func.now(){% endif %}{% if field.name=='update_time' %},server_default=func.now(),onupdate=func.now(){% endif %}{% if field.is_nullable %},nullable=True{% endif %}){% endfor %}
+
+class {{ entity }}SaveDTO(BaseModel):
+ {% for field in table.fields %}{% if field.name not in ['id','create_time','update_time'] %}
+    #{{ field.comment }}
+    {{ field.name }}: {% if field.is_nullable %}Optional[{{ field.py_type }}]=None{% else %}{{ field.py_type }}{% endif %}{% endif %}{% endfor %}
+{% if mode=='api' %}
+class {{ entity }}ApiQueryDTO(BaseModel):
+    page:int|None=1
+    limit:int|None=10
+    last_id:Optional[int|None]=0
+    user_id:Optional[int|None]=0
+
+class {{ entity }}ApiVO(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+{% for field in table.fields %}{% if field.name not in ['update_time'] %}
+    #{{ field.comment }}
+    {{ field.name }}: Optional[{% if field.py_type=='datetime' %}DatetimeStr {% elif field.py_type=='date' %}DateStr{% else %}{{ field.py_type }}{% endif %}] = None{% endif %}{% endfor %}
+{% elif mode=='admin'%}
+class {{ entity }}AdminQueryDTO(BaseModel):
+    page:int|None=1
+    limit:int|None=10
+{% for field in table.fields %}{% if field.py_type in ['str'] and field.max_len and field.max_len<=50 %}
+    #{{ field.comment }}
+    {{ field.name }}: Optional[{{ field.py_type }}] = None{% endif %}{% endfor %}
+
+class {{ entity }}AdminVO(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+{% for field in table.fields %}{% if field.name not in ['update_time'] %}
+    #{{ field.comment }}
+    {{ field.name }}: Optional[{% if field.py_type=='datetime' %}DatetimeStr {% elif field.py_type=='date' %}DateStr{% else %}{{ field.py_type }}{% endif %}] = None{% endif %}{% endfor %}
+{% else %}
+class {{ entity }}ApiQueryDTO(BaseModel):
+    page:int|None=1
+    limit:int|None=10
+    last_id:Optional[int|None]=0
+    user_id:Optional[int|None]=0
+
+class {{ entity }}ApiVO(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+{% for field in table.fields %}{% if field.name not in ['update_time'] %}
+    #{{ field.comment }}
+    {{ field.name }}: Optional[{% if field.py_type=='datetime' %}DatetimeStr {% elif field.py_type=='date' %}DateStr{% else %}{{ field.py_type }}{% endif %}] = None{% endif %}{% endfor %}
+
+class {{ entity }}AdminQueryDTO(BaseModel):
+    page:int|None=1
+    limit:int|None=10
+{% for field in table.fields %}{% if field.py_type in ['str'] and field.max_len and field.max_len<=50%}
+    #{{ field.comment }}
+    {{ field.name }}: Optional[{{ field.py_type }}] = None{% endif %}{% endfor %}
+
+class {{ entity }}AdminVO(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+{% for field in table.fields %}{% if field.name not in ['update_time'] %}
+    #{{ field.comment }}
+    {{ field.name }}: Optional[{% if field.py_type=='datetime' %}DatetimeStr {% elif field.py_type=='date' %}DateStr{% else %}{{ field.py_type }}{% endif %}] = None{% endif %}{% endfor %}
+
+{% endif %}

@@ -1,0 +1,145 @@
+{
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^s-(.*)": "@/sheep/components/s-$1/s-$1.vue",
+      "^su-(.*)": "@/sheep/ui/su-$1/su-$1.vue"
+    }
+  },
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "aliasPath": "/",
+      "style": {
+        "navigationBarTitleText": "首页",
+        "enablePullDownRefresh": true
+      },
+      "meta": {
+        "auth": false,
+        "title": "首页"
+      }
+    },
+    {
+      "path": "pages/index/user",
+      "style": {
+        "navigationBarTitleText": "个人中心",
+        "enablePullDownRefresh": true
+      },
+      "meta": {
+        "title": "个人中心"
+      }
+    },
+    {
+      "path": "pages/index/login",
+      "style": {
+        "navigationBarTitleText": "登录"
+      }
+    }
+  ],
+  "subPackages": [
+    {
+      "root": "pages/user",
+      "pages": [
+        {
+          "path": "info",
+          "style": {
+            "navigationBarTitleText": "我的信息"
+          },
+          "meta": {
+            "auth": true,
+            "title": "用户信息"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/public",
+      "pages": [
+        {
+          "path": "setting",
+          "style": {
+            "navigationBarTitleText": "系统设置"
+          },
+          "meta": {
+            "sync": true,
+            "title": "系统设置",
+            "group": "通用"
+          }
+        },
+        {
+          "path": "feedback",
+          "style": {
+            "navigationBarTitleText": "问题反馈"
+          },
+          "meta": {
+            "auth": true,
+            "sync": true,
+            "title": "问题反馈",
+            "group": "通用"
+          }
+        },
+        {
+          "path": "richtext",
+          "style": {
+            "navigationBarTitleText": "富文本"
+          },
+          "meta": {
+            "sync": true,
+            "title": "富文本",
+            "group": "通用"
+          }
+        },
+        {
+          "path": "faq",
+          "style": {
+            "navigationBarTitleText": "常见问题"
+          },
+          "meta": {
+            "sync": true,
+            "title": "常见问题",
+            "group": "通用"
+          }
+        },
+        {
+          "path": "error",
+          "style": {
+            "navigationBarTitleText": "错误页面"
+          }
+        },
+        {
+          "path": "webview",
+          "style": {
+            "navigationBarTitleText": ""
+          }
+        }
+      ]
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "静远开发starter",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#FFFFFF"
+  },
+  "tabBar": {
+      "color": "#7A7E83",
+      "selectedColor": "#007AFF",
+      "borderStyle": "black",
+      "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "text": "首页",
+        "pagePath": "pages/index/index",
+        "iconPath": "static/tabbar/index.png",
+        "selectedIconPath": "static/tabbar/index_active.png"
+      },
+
+      {
+        "text": "我的",          
+        "pagePath": "pages/index/user",
+        "iconPath": "static/tabbar/me.png",
+        "selectedIconPath": "static/tabbar/me_active.png"
+      }
+    ]
+  }
+}

@@ -1,0 +1,68 @@
+<script setup lang="tsx">
+import {Form, FormSchema} from '@/components/Form'
+import {useForm} from '@/hooks/web/useForm'
+import {PropType, reactive, watch} from 'vue'
+import {useValidator} from '@/hooks/web/useValidator'
+
+
+const {required, isTelephone, isEmail} = useValidator()
+
+const props = defineProps({
+  currentRow: {
+    type: Object as PropType<any>,
+    default: () => null
+  }
+})
+
+const formSchema = reactive<FormSchema[]>([{% for field in table.fields %}{% if field.name not in ['id','create_time','update_time'] %}
+  {
+    field: '{{field.name}}',
+    label: '{{field.comment}}',
+    colProps: {
+      span: 12
+    },
+    component: {% if field.py_type in ['datetime'] %}'DatePicker'{% elif field.py_type in ['int','Decimal'] %}'InputNumber'{% else %}'Input'{% endif %},
+    componentProps: {
+      style: {
+        width: '100%'
+      }{% if field.py_type in ['datetime'] %},type:'datetime',format:"YYYY-MM-DD HH:mm:ss",valueFormat:"YYYY-MM-DD HH:mm:ss"{% elif field.py_type in ['date'] %},type:'date',format:"YYYY-MM-DD",valueFormat:"YYYY-MM-DD"{% elif field.py_type=='str' and field.max_len and field.max_len>50 %},type:'textarea',rows:3{% endif %}
+    }
+  }{% if not loop.last %}, {% endif %}{% endif %}{% endfor %}
+])
+
+const rules = reactive({ {% for field in table.fields %}{% if not field.is_nullable %}
+  {{field.name}}: [required()]{% if not loop.last %},{% endif %}{% endif %}{% endfor %}
+})
+
+const {formRegister, formMethods} = useForm()
+const {setValues, getFormData, getElFormExpose} = formMethods
+
+const submit = async () => {
+  const elForm = await getElFormExpose()
+  const valid = await elForm?.validate()
+  if (valid) {
+    const formData = await getFormData()
+    return formData
+  }
+}
+
+watch(
+    () => props.currentRow,
+    (currentRow) => {
+      if (!currentRow) return
+      setValues(currentRow)
+    },
+    {
+      deep: true,
+      immediate: true
+    }
+)
+
+defineExpose({
+  submit
+})
+</script>
+
+<template>
+  <Form :rules="rules" @register="formRegister" :schema="formSchema"/>
+</template>

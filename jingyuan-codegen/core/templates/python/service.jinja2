@@ -1,0 +1,122 @@
+from sqlalchemy import func, delete, update, BinaryExpression, ScalarResult, select, insert
+from .models import *
+from sqlalchemy.ext.asyncio import AsyncSession
+from typing import Any
+
+class {{ entity }}Service:
+
+    def __init__(self, db: AsyncSession):
+        self.db = db
+
+    async def create_data(
+            self,
+            dto: {{ entity }}SaveDTO
+    ) -> int:
+        entity = {{ entity }}(**dto.model_dump())
+        entity.create_time=datetime.now()
+        self.db.add(entity)
+        await self.db.flush()
+        return entity.id
+
+    async def put_data(
+            self,
+            id: int,
+            dto: {{ entity }}SaveDTO
+    ):
+        entity = await self.db.get({{ entity }}, id)
+        if entity != None:
+            dto_dict = dto.model_dump()
+            for k in dto_dict.keys():
+                v = dto_dict.get(k)
+                if v != None:
+                    setattr(entity, k, v)
+            entity.update_time=datetime.now()
+            await self.db.flush()
+
+    async def delete_datas(self, ids: list[int]) -> None:
+        await self.db.execute(delete({{ entity }}).where({{ entity }}.id.in_(ids)))
+        await self.db.flush()
+
+  {% if mode in ['api','api_adminquery','admin_apiquery'] %}
+    async def get_for_api(
+                self,
+                id: int):
+        entity = await self.db.get({{ entity }}, id)
+        if entity == None:
+            return None
+        return {{ entity }}ApiVO.model_validate(entity)
+
+    async def query_for_api(self, query_params: {{entity}}ApiQueryDTO) -> (bool, list[{{entity}}ApiVO]):
+        sql = select({{entity}})
+        params_dict = query_params.model_dump(exclude=['limit', 'page', 'last_id', 'user_id'])
+        conditions = []
+        if query_params.last_id and query_params.last_id > 0:
+            conditions.append({{entity}}.id > query_params.last_id)
+        if query_params.user_id and query_params.user_id > 0:
+            conditions.append({{entity}}.user_id == query_params.user_id)
+        for key in params_dict.keys():
+            if params_dict[key]:
+                conditions.append(getattr({{entity}}, key) == params_dict[key])
+        if conditions:
+            # sql对象是不可变的，各种方法返回新实例
+            # *将列表展开传入，**是将字典展开
+            sql = sql.where(*conditions)
+
+        if query_params.limit and query_params.limit <= 0:
+            query_params.limit = 10
+            if not query_params.last_id:
+                if not query_params.page:
+                    query_params.page = 1
+                    sql = sql.offset((query_params.page - 1) * query_params.limit)
+            # 多取一条用于判断是否有下一页
+            sql = sql.limit(query_params.limit + 1)
+
+        rs = await self.db.scalars(sql)
+        if rs == None:
+            return (None, False)
+        result_list = [{{entity}}ApiVO.model_validate(entity) for entity in rs.all()]
+        has_next = len(result_list) > query_params.limit
+        if has_next:
+            return (result_list[0:-1], True)
+        return (result_list, False)
+{% endif %}
+{% if mode in ['admin','admin_apiquery','api_adminquery'] %}
+    async def get_for_admin(
+                self,
+                id: int):
+        entity = await self.db.get({{ entity }}, id)
+        if entity == None:
+            return None
+        return {{ entity }}AdminVO.model_validate(entity)
+
+    async def query_for_admin(self, query_params: {{ entity }}AdminQueryDTO, need_count: bool = True) -> (int, list[{{ entity }}AdminVO]):
+        sql = select({{ entity }})
+        params_dict = query_params.model_dump(exclude=['limit', 'page'])
+        conditions = []
+        for key in params_dict.keys():
+            ##sql=sql.where()使用方式
+            ##where()参数就是模型类.field==value的表达式
+            if params_dict[key]:
+                #这里通过getattr传入模型类(不是实例)和字段名可以获取对应的字段的模型类.字段形式
+                conditions.append(getattr({{ entity }}, key) == params_dict[key])
+        if conditions:
+            #sql对象是不可变的，各种方法返回新实例
+            #*将列表展开传入，**是将字典展开
+            sql=sql.where(*conditions)
+
+        if query_params.limit and query_params.limit <= 0:
+            query_params.limit = 10
+            if not query_params.page:
+                query_params.page = 1
+            sql = sql.offset((query_params.page - 1) * query_params.limit).limit(query_params.limit)
+
+        rs = await self.db.scalars(sql)
+        if rs == None:
+            return (None,0)
+        count = 0
+        if need_count:
+            count_sql = select(func.count()).select_from({{ entity }})
+            count_queryset = await self.db.execute(count_sql)
+            count = count_queryset.one()[0]
+        return ([{{ entity }}AdminVO.model_validate(entity) for entity in rs.all()], count)
+{% endif %}

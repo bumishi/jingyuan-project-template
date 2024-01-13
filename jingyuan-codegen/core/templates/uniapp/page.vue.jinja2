@@ -1,0 +1,48 @@
+<template>
+  <view>
+    <s-layout
+        title="{{ table.table_name }}"
+        onShareAppMessage>
+      <view></view>
+    </s-layout>
+  </view>
+</template>
+
+<script setup>
+import {computed, ref} from 'vue';
+import {onLoad, onPullDownRefresh} from '@dcloudio/uni-app';
+import sheep from '@/sheep';
+
+const userInfo = computed(() => sheep.$store('user').userInfo);
+
+const bizData = ref({})
+
+async function getBizData() {
+    const {code, data} = await sheep.$api.{{ table.table_name }}.query();
+    if (code === 200) {
+        bizData.value = data;
+    }
+}
+
+onLoad((options) => {
+  // 进入指定页面(完整页面路径)
+  if (options.page) {
+    sheep.$router.go(decodeURIComponent(options.page));
+  } else {
+    getBizData();
+  }
+});
+
+// 下拉刷新
+onPullDownRefresh(() => {
+  getBizData();
+  setTimeout(function () {
+    uni.stopPullDownRefresh();
+  }, 800);
+});
+
+</script>
+
+<style>
+
+</style>

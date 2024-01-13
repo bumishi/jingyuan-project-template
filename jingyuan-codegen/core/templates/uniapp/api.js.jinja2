@@ -1,0 +1,34 @@
+import request from '@/sheep/request';
+
+export default {
+    query: () =>
+        request({
+            url: '{{api_route}}/query',
+            method: 'GET',
+            custom: {
+                showLoading: false,
+                auth: true
+            }
+        }),
+    update: (data) =>
+        request({
+            url: '{{api_route}}/update/'+data.id,
+            method: 'POST',
+            custom: {
+                showSuccess: true,
+                auth: true
+            },
+            data
+        }),
+
+    add: (data) =>
+        request({
+            url: '{{api_route}}/add',
+            method: 'POST',
+            data,
+            custom: {
+                showSuccess: true,
+                auth: true
+            }
+        })
+};

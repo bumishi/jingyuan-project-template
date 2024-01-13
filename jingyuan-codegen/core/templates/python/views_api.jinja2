@@ -1,0 +1,48 @@
+from fastapi import APIRouter, Depends
+
+from apps.vadmin.auth.utils.current import AllUserAuth
+from apps.vadmin.auth.utils.validation.auth import Auth
+from core.dependencies import IdList
+from .models import *
+from utils.response import SuccessResponse,RestResponse
+from . import service
+
+app = APIRouter()
+
+{% if mode in ['api','api_adminquery','admin_apiquery'] %}
+@app.post("{{api_route}}/query", summary="列表查询")
+async def query_list(
+        params: {{entity}}ApiQueryDTO,
+        auth: Auth = Depends(AllUserAuth())
+):
+    datas, has_next = await service.{{entity}}Service(auth.db).query_for_api(params)
+    return RestResponse.success(data=datas, has_next=has_next)
+
+@app.get("{{api_route}}/get/{data_id}", summary="获取信息")
+async def get(
+        data_id: int,
+        auth: Auth = Depends(AllUserAuth)):
+    data=await service.{{entity}}Service(auth.db).get_for_api(data_id)
+    return RestResponse.success(data=data)
+{% endif %}
+{% if mode in ['api','api_adminquery'] %}
+@app.post("{{api_route}}/add", summary="新增操作")
+async def add_data(dto: {{entity}}SaveDTO, auth: Auth = Depends(AllUserAuth())):
+    return RestResponse.success(await service.{{entity}}Service(auth.db).create_data(dto))
+
+
+@app.post("{{api_route}}/del", summary="批量删除")
+async def delete_datas(ids: IdList = Depends(), auth: Auth = Depends(AllUserAuth())):
+    await service.{{entity}}Service(auth.db).delete_datas(ids.ids)
+    return RestResponse.success()
+
+
+@app.post("{{api_route}}/update/{data_id}", summary="更新信息")
+async def update_data(
+        data_id: int,
+        dto: {{entity}}SaveDTO,
+        auth: Auth = Depends(AllUserAuth())
+):
+    await service.{{entity}}Service(auth.db).put_data(data_id, dto)
+    return RestResponse.success()
+{% endif %}
