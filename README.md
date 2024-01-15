@@ -178,8 +178,8 @@ git clone https://gitee.com/xieqiangcode/jingyuan-project-template
 4. 创建数据库
 
    ```
-   mysql> create database jingyuan-starter;             # 创建数据库
-   mysql> use jingyuan-starter;                         # 使用已创建的数据库 
+   mysql> create database `jingyuan-starter`;             # 创建数据库
+   mysql> use `jingyuan-starter`;                         # 使用已创建的数据库 
    mysql> set names utf8;                    # 设置编码
    ```
 
