@@ -2,7 +2,7 @@
 ## [关于]
 
 <div align="center">
-![](https://cos.bumishi.cn/APP-Startter-logo.png)
+<img src="https://cos.bumishi.cn/APP-Startter-logo.png"
 </div>
 
 <div align="center"><h3 align="center"> 这是一个适用于任何类型项目的开发模板，可基于此项目快速开发业务可以作为新项目的启动模版！
@@ -14,7 +14,6 @@
 
 
 ## 介绍
-
 本项目包含且只包含最基本的登录、注册、腾讯短信验证码、微信登录、用户中心、系统公告、系统配置、用户反馈、字典维护、后台权限管理相关的菜单、角色、用户、七牛云存储文件上传，这是任何项目都基本需要的基础功能。
 包含了后端api、VUE3管理后台前端、产品端uniapp(小程序+ios+android)、定时任务、代码生成器五个模块。
 
@@ -179,8 +178,8 @@ git clone https://gitee.com/xieqiangcode/jingyuan-project-template
 4. 创建数据库
 
    ```
-   mysql> create database jingyuan-starter;             # 创建数据库
-   mysql> use jingyuan-starter;                         # 使用已创建的数据库 
+   mysql> create database `jingyuan-starter`;             # 创建数据库
+   mysql> use `jingyuan-starter`;                         # 使用已创建的数据库 
    mysql> set names utf8;                    # 设置编码
    ```
 
