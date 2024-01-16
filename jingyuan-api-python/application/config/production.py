@@ -37,20 +37,20 @@ MONGO_DB_URL = f"mongodb://kinit:123456@177.8.0.6:27017/?authSource={MONGO_DB_NA
  *  [bucket] {String}：通过控制台或PutBucket创建的bucket。
 """
 QINIU_OSS = {
-    "accessKeyId": "NDx4d9Lr1IYC7ThIFw-s77rCnJJPqdQX5bKl169j",
-    "accessKeySecret": "QIEaT5yrcdaLmBIUhBp2rYkivtWZLFd_u3OFvbt6",
-    "bucket": "bumishi-blog",
-    "domain": "https://cos.bumishi.cn"
+    "accessKeyId": "",
+    "accessKeySecret": "",
+    "bucket": "",
+    "domain": ""
 }
 
 
 TENCENT_SMS={
-    "secretId": "AKID1vc8PWTHxTr5CrU0MftvpbHsMiy7AGQW",
-    "secretKey": "3xrfOyObnupbHo9PSMAqNqBLMBwjUI2j",
+    "secretId": "",
+    "secretKey": "",
     "region": "ap-guangzhou",
-    "SmsSdkAppId": "1400841602",
-    "SignName": "静远资产配置助手小程序",
-    "TemplateId": "1873678",
+    "SmsSdkAppId": "",
+    "SignName": "",
+    "TemplateId": "",
     "TemplateParamSet": ["code"]
 }
 
