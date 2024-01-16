@@ -22,6 +22,8 @@ const props = defineProps({
 
 const token = getStorage(appStore.getToken)
 
+const BASE = import.meta.env.VITE_API_BASE_PATH;
+
 const formSchema = reactive<FormSchema[]>([
   {
     field: 'web_title',
@@ -80,7 +82,7 @@ const formSchema = reactive<FormSchema[]>([
               headers={{ Authorization: token }}
             >
               {data.web_logo ? (
-                <img src={data.web_logo} class="logo-image" />
+                <img src={BASE+data.web_logo} class="logo-image" />
               ) : (
                 <ElIcon class="logo-image-uploader-icon">
                   <Icon icon="akar-icons:plus" size={23} />
@@ -153,7 +155,7 @@ const formSchema = reactive<FormSchema[]>([
               headers={{ Authorization: token }}
             >
               {data.web_ico ? (
-                <img src={data.web_ico} class="ico-image" />
+                <img src={BASE+data.web_ico} class="ico-image" />
               ) : (
                 <ElIcon class="ico-image-uploader-icon">
                   <Icon icon="akar-icons:plus" size={23} />
