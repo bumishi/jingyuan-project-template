@@ -8,7 +8,7 @@
     "i": "pnpm install",
     "dev": "vite --mode dev",
     "ts:check": "vue-tsc --noEmit --skipLibCheck",
-    "build:pro": "vite build --mode pro",
+    "build": "vite build --mode pro",
     "serve:pro": "vite preview --mode pro",
     "serve:dev": "vite preview --mode dev",
     "npm:check": "npx npm-check-updates",
