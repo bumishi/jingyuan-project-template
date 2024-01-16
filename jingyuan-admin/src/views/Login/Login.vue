@@ -42,7 +42,7 @@ const toPasswordLogin = () => {
             :class="`${prefixCls}__left flex-1 bg-gray-500 bg-opacity-20 relative p-30px lt-xl:hidden`"
         >
           <div class="flex items-center relative text-white">
-            <img :src="logo" alt="" class="w-48px h-48px mr-10px" />
+            <img :src="BASE+logo" alt="" class="w-48px h-48px mr-10px" />
             <span class="text-20px font-bold">{{ underlineToHump(appStore.getTitle) }}</span>
           </div>
           <div class="flex justify-center items-center h-[calc(100%-60px)]">
