@@ -126,8 +126,8 @@ async def put_settings_tabs_values(
         datas: dict = Body(...),
         auth: Auth = Depends((FullAdminAuth(permissions=["system.setting.save"])))
 ):
-    return SuccessResponse(await crud.SettingsDal(auth.db).update_datas(datas, request))
-
+    await crud.SettingsDal(auth.db).update_datas(datas, request)
+    return SuccessResponse(datas)
 
 ###########################################################
 #    定时任务管理
