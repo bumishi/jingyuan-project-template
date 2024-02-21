@@ -1,3 +1,5 @@
+import 'vue/jsx'
+
 // 引入windi css
 import '@/plugins/unocss'
 
@@ -36,6 +38,7 @@ import './permission'
 
 // 创建实例
 const setupAll = async () => {
+
   const app = createApp(App)
 
   await setupI18n(app)

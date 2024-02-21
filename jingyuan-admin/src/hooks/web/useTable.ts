@@ -87,7 +87,7 @@ export const useTable = (config: UseTableConfig) => {
           total.value = res.total || 0
         }
       } catch (err) {
-        console.log('fetchDataApi error',err)
+        console.log('fetchDataApi error')
       } finally {
         loading.value = false
       }

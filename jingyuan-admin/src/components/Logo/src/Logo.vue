@@ -19,8 +19,6 @@ const collapse = computed(() => appStore.getCollapse)
 
 const logoImage = computed(() => appStore.getLogoImage)
 
-const BASE = import.meta.env.VITE_API_BASE_PATH;
-
 onMounted(() => {
   if (unref(collapse)) show.value = false
 })
@@ -32,13 +30,7 @@ watch(
       show.value = true
       return
     }
-    if (!collapse) {
-      setTimeout(() => {
-        show.value = !collapse
-      }, 400)
-    } else {
-      show.value = !collapse
-    }
+    show.value = !collapse
   }
 )
 
@@ -69,7 +61,7 @@ watch(
       to="/"
     >
       <img
-        :src="BASE+logoImage"
+        :src="logoImage"
         class="w-[calc(var(--logo-height)-10px)] h-[calc(var(--logo-height)-10px)]"
       />
       <div

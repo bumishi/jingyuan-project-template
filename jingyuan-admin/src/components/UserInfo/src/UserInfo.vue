@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ElDropdown, ElDropdownMenu, ElDropdownItem, ElMessageBox } from 'element-plus'
 import { useI18n } from '@/hooks/web/useI18n'
-import { useAuthStoreWithOut } from '@/store/modules/auth'
+import { useAuthStore } from '@/store/modules/auth'
 import { useDesign } from '@/hooks/web/useDesign'
 import LockDialog from './components/LockDialog.vue'
 import { ref, computed } from 'vue'
@@ -14,7 +14,7 @@ const lockStore = useLockStore()
 
 const getIsLock = computed(() => lockStore.getLockInfo?.isLock ?? false)
 
-const authStore = useAuthStoreWithOut()
+const authStore = useAuthStore()
 
 const { getPrefixCls } = useDesign()
 
@@ -59,7 +59,7 @@ const user = computed(() => authStore.getUser)
 </script>
 
 <template>
-  <ElDropdown class="custom-hover" :class="prefixCls" trigger="click">
+  <ElDropdown class="custom-hover" :class="prefixCls" trigger="click" v-if="user&&user.id">
     <div class="flex items-center">
       <img
         :src="user.avatar ? user.avatar : avatar"
@@ -67,11 +67,14 @@ const user = computed(() => authStore.getUser)
         class="w-[calc(var(--logo-height)-25px)] rounded-[50%]"
       />
       <span class="<lg:hidden text-14px pl-[5px] text-[var(--top-header-text-color)]">{{
-        user.name
+        user.nickname?user.nickname:user.telephone
       }}</span>
     </div>
     <template #dropdown>
       <ElDropdownMenu>
+        <ElDropdownItem>
+          <BaseButton @click="toHome" link>个人信息</BaseButton>
+        </ElDropdownItem>
         <ElDropdownItem>
           <div @click="loginOut">{{ t('common.loginOut') }}</div>
         </ElDropdownItem>

@@ -4,13 +4,13 @@ import type { UserConfig, ConfigEnv } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import VueJsx from '@vitejs/plugin-vue-jsx'
 import progress from 'vite-plugin-progress'
-import { ViteEjsPlugin } from "vite-plugin-ejs"
-import { viteMockServe } from 'vite-plugin-mock'
+import { ViteEjsPlugin } from 'vite-plugin-ejs'
 import PurgeIcons from 'vite-plugin-purge-icons'
-import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite"
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import { createStyleImportPlugin, ElementPlusResolve } from 'vite-plugin-style-import'
 import UnoCSS from 'unocss/vite'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 // https://vitejs.dev/config/
 const root = process.cwd()
@@ -20,15 +20,15 @@ function pathResolve(dir: string) {
 }
 
 export default ({ command, mode }: ConfigEnv): UserConfig => {
-  console.log(command, process.argv)
   let env = {} as any
   const isBuild = command === 'build'
   if (!isBuild) {
-    env = loadEnv((process.argv[3] === '--mode' ? process.argv[4] : process.argv[3]), root)
+    env = loadEnv(process.argv[3] === '--mode' ? process.argv[4] : process.argv[3], root)
   } else {
     env = loadEnv(mode, root)
   }
   console.log(command,'--mode:',mode)
+  console.log(env)
   return {
     base: env.VITE_BASE_PATH,
     plugins: [
@@ -64,22 +64,10 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         svgoOptions: true
       }),
       PurgeIcons(),
-      viteMockServe({
-        ignore: /^\_/,
-        mockPath: 'mock',
-        localEnabled: !isBuild,
-        prodEnabled: isBuild,
-        injectCode: `
-          import { setupProdMockServer } from '../mock/_createProductionServer'
-
-          setupProdMockServer()
-          `
-      }),
       ViteEjsPlugin({
         title: env.VITE_APP_TITLE
       }),
-      UnoCSS(),
-      // sveltekit(),
+      UnoCSS()
     ],
 
     css: {
@@ -103,17 +91,28 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         }
       ]
     },
+    esbuild: {
+      pure: env.VITE_DROP_CONSOLE === 'true' ? ['console.log'] : undefined,
+      drop: env.VITE_DROP_DEBUGGER === 'true' ? ['debugger'] : undefined
+    },
     build: {
-      minify: 'terser',
+      target: 'es2015',
       outDir: env.VITE_OUT_DIR || 'dist',
-      sourcemap: env.VITE_SOURCEMAP === 'true' ? 'inline' : false,
+      sourcemap: env.VITE_SOURCEMAP === 'true',
       // brotliSize: false,
-      terserOptions: {
-        compress: {
-          drop_debugger: env.VITE_DROP_DEBUGGER === 'true',
-          drop_console: env.VITE_DROP_CONSOLE === 'true'
+      rollupOptions: {
+        plugins: env.VITE_USE_BUNDLE_ANALYZER === 'true' ? [visualizer()] : undefined,
+        // 拆包
+        output: {
+          manualChunks: {
+            'vue-chunks': ['vue', 'vue-router', 'pinia', 'vue-i18n'],
+            'element-plus': ['element-plus'],
+            'wang-editor': ['@wangeditor/editor', '@wangeditor/editor-for-vue'],
+            echarts: ['echarts', 'echarts-wordcloud']
+          }
         }
-      }
+      },
+      cssCodeSplit: !(env.VITE_USE_CSS_SPLIT === 'false')
     },
     server: {
       port: 5000,
@@ -122,19 +121,13 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         '/api': {
           target: 'http://127.0.0.1:9000',
           changeOrigin: true,
-          rewrite: path => path.replace(/^\/api/, '')
+          rewrite: (path) => path.replace(/^\/api/, '')
         },
         // 选项写法
         '/media': {
           target: 'http://127.0.0.1:9000',
           changeOrigin: true,
-          rewrite: path => path
-        },
-        // 选项写法
-        '/temp': {
-          target: 'http://127.0.0.1:9000',
-          changeOrigin: true,
-          rewrite: path => path
+          rewrite: (path) => path
         }
       },
       hmr: {
@@ -160,7 +153,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         '@wangeditor/editor-for-vue',
         'vue-json-pretty',
         '@zxcvbn-ts/core',
-        'dayjs'
+        'dayjs',
+        'cropperjs'
       ]
     }
   }
