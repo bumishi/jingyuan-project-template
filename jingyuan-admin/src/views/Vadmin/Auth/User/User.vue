@@ -207,7 +207,7 @@ const tableColumns = reactive<TableColumn[]>([
             <ElButton
               type="danger"
               v-hasPermi={del}
-              v-show={row.is_staff}
+              v-show={row.is_staff && row.id>1}
               loading={delLoading.value}
               link
               size="small"
