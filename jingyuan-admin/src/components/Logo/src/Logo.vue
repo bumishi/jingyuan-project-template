@@ -17,7 +17,9 @@ const layout = computed(() => appStore.getLayout)
 
 const collapse = computed(() => appStore.getCollapse)
 
-const logoImage = computed(() => appStore.getLogoImage)
+const BASE = import.meta.env.VITE_API_BASE_PATH;
+
+const logoImage = computed(() => BASE+appStore.getLogoImage)
 
 onMounted(() => {
   if (unref(collapse)) show.value = false
