@@ -265,7 +265,7 @@ pnpm install
 3. 启动
 
    ```
-   python3 main.py
+   python3 main.py run
    ```
 
 
@@ -274,6 +274,12 @@ pnpm install
 - 访问地址：http://localhost:5000 (默认为此地址，如有修改请按照配置文件)
 - 账号：`18975828726` 密码：`jingyuan2024`
 - 接口地址：http://localhost:9000/docs (默认为此地址，如有修改请按照配置文件)
+
+##在线演示
+
+[在线体验](http://159.75.182.203/adminui)
+
+- 账号：`18975828726` 密码：`jingyuan2024`
 
 ## 如何贡献
 
