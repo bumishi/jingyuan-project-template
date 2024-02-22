@@ -26,11 +26,11 @@
   /* logo end */
 
   /* header start */
-  --top-header-bg-color: '#fff';
+  --top-header-bg-color: '#151515';
 
-  --top-header-text-color: 'inherit';
+  --top-header-text-color: '#fff';
 
-  --top-header-hover-color: #f6f6f6;
+  --top-header-hover-color: #242424;
 
   --top-tool-height: var(--logo-height);
 
