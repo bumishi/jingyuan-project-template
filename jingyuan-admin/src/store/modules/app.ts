@@ -65,7 +65,7 @@ export const useAppStore = defineStore('app', {
       fixedMenu: false, // 是否固定菜单
 
       layout: 'classic', // layout布局
-      isDark: false, // 是否是暗黑模式
+      isDark: true, // 是否是暗黑模式
       currentSize: 'default', // 组件尺寸
       theme: {
         // 主题色
