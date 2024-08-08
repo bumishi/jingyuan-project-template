@@ -8,12 +8,19 @@
 
 from datetime import datetime, timedelta
 from fastapi import Request
+from redis.asyncio.client import Redis
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from application import settings
 import jwt
+
+from application.settings import DEBUG
 from apps.vadmin.auth import models
 from core.database import redis_getter
 from utils.sms.code import CodeSMS
-from .validation import LoginValidation, LoginForm, LoginResult,RegisterForm
+from .validation import LoginValidation, LoginForm, LoginResult, RegisterForm
+from apps.vadmin.auth import crud as vadmin_auth_crud
+from ..models import VadminUser
 
 class LoginManage:
 
@@ -60,3 +67,23 @@ class LoginManage:
         payload.update({"exp": expire})
         encoded_jwt = jwt.encode(payload, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
         return encoded_jwt
+
+
+    @staticmethod
+    async def login_by_mobile_if_none_register(data: RegisterForm, db: AsyncSession, rd: Redis):
+        """
+        验证用户短信验证码
+        """
+        if not DEBUG:
+            sms = CodeSMS(data.mobile, rd)
+            result = await sms.check_sms_code(data.code)
+            if not result:
+                raise ValueError("手机验证码错误")
+        user = await vadmin_auth_crud.UserDal(db).get_data(telephone=data.mobile, v_return_none=True)
+        if user:
+            return user
+        user = VadminUser(telephone=data.mobile, nickname=data.mobile, is_active=True, is_staff=False,
+                          create_datetime=datetime.now(),platform=data.platform)
+        db.add(user)
+        await db.flush()
+        return user

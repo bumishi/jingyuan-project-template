@@ -76,7 +76,7 @@ class UserOut(UserSimpleOut):
 
 class AppUserInfo(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-
+    id:int=None
     telephone: Telephone|None=None
     nickname: str | None = None
     avatar: str | None = None

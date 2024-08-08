@@ -74,29 +74,6 @@ async def do_register(data: RegisterForm, db: AsyncSession, rd: Redis):
     return create_login_response(user)
 
 
-@app.post("/api/login", summary="API 手机号密码登录", description="Swagger API 文档登录认证")
-async def api_login_for_access_token(
-        request: Request,
-        data: OAuth2PasswordRequestForm = Depends(),
-        db: AsyncSession = Depends(db_getter)
-):
-    user = await UserDal(db).get_data(telephone=data.username, v_return_none=True)
-    if not user:
-        raise CustomException(status_code=401, code=401, msg="该手机号不存在")
-    result = VadminUser.verify_password(data.password, user.password)
-    if not result:
-        raise CustomException(status_code=401, code=401, msg="手机号或密码错误")
-    if not user.is_active:
-        raise CustomException(status_code=401, code=401, msg="此手机号已被冻结")
-    elif not user.is_staff:
-        raise CustomException(status_code=401, code=401, msg="此手机号无权限")
-    access_token = LoginManage.create_token({"sub": user.id})
-    record = LoginForm(platform='2', method='0', telephone=data.username, password=data.password)
-    resp = {"access_token": access_token, "token_type": "bearer"}
-    await VadminLoginRecord.create_login_record(db, record, True, request, resp)
-    return resp
-
-
 @app.post("/login", summary="手机号登录")
 async def login_for_access_token(
         request: Request,
@@ -122,6 +99,22 @@ async def login_for_access_token(
         await VadminLoginRecord.create_login_record(db, data, False, request, {"message": str(e)})
         return ErrorResponse(msg=str(e))
 
+
+##对于手机号+验证码的登录，没有账号则自动创建账户
+@app.post("/login_by_mobile", summary="手机号登录/注册")
+async def login_by_mobile(
+        request: Request,
+        data: RegisterForm,
+        manage: LoginManage = Depends(),
+        db: AsyncSession = Depends(db_getter),
+        rd: Redis = Depends(redis_getter)
+):
+    try:
+        user = await manage.login_by_mobile_if_none_register(data, db, rd)
+        resp = create_login_response(user)
+        return SuccessResponse(resp)
+    except Exception as e:
+        return ErrorResponse(msg=str(e))
 
 def create_login_response(user: VadminUser):
     access_token = LoginManage.create_token({"sub": user.id, "is_refresh": False})

@@ -9,7 +9,7 @@ from fastapi import APIRouter, Depends, UploadFile, Form
 from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from application.settings import QINIU_OSS
+from application.settings import QINIU_OSS, DEBUG
 from apps.vadmin.auth import crud as vadmin_auth_crud
 from apps.vadmin.auth.utils.current import OpenAuth, FullAdminAuth, AllUserAuth
 from apps.vadmin.auth.utils.validation.auth import Auth
@@ -70,6 +70,8 @@ async def sms_send(telephone: str, event: str = 'login', rd: Redis = Depends(red
     sms = CodeSMS(telephone, rd)
     code = sms.get_code()
     print(code)
+    if DEBUG:
+        return SuccessResponse()
     return SuccessResponse(await sms.send_msg(code=code))
 
 

@@ -57,9 +57,6 @@ class LoginValidation:
 
     async def __call__(self, data: LoginForm, db: AsyncSession, request: Request) -> LoginResult:
         self.result = LoginResult()
-        if data.platform not in ["0", "1"] or data.method not in ["0", "1"]:
-            self.result.msg = "无效参数"
-            return self.result
         user = await crud.UserDal(db).get_data(telephone=data.mobile, v_return_none=True)
         if not user:
             self.result.msg = "该手机号不存在！"
