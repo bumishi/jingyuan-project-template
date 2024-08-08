@@ -1,0 +1,137 @@
+PODS:
+  - DKImagePickerController/Core (4.3.8):
+    - DKImagePickerController/ImageDataManager
+    - DKImagePickerController/Resource
+  - DKImagePickerController/ImageDataManager (4.3.8)
+  - DKImagePickerController/PhotoGallery (4.3.8):
+    - DKImagePickerController/Core
+    - DKPhotoGallery
+  - DKImagePickerController/Resource (4.3.8)
+  - DKPhotoGallery (0.0.18):
+    - DKPhotoGallery/Core (= 0.0.18)
+    - DKPhotoGallery/Model (= 0.0.18)
+    - DKPhotoGallery/Preview (= 0.0.18)
+    - DKPhotoGallery/Resource (= 0.0.18)
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Core (0.0.18):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Preview
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Model (0.0.18):
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Preview (0.0.18):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Resource
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Resource (0.0.18):
+    - SDWebImage
+    - SwiftyGif
+  - file_picker (0.0.1):
+    - DKImagePickerController/PhotoGallery
+    - Flutter
+  - Flutter (1.0.0)
+  - flutter_inappwebview_ios (0.0.1):
+    - Flutter
+    - flutter_inappwebview_ios/Core (= 0.0.1)
+    - OrderedSet (~> 5.0)
+  - flutter_inappwebview_ios/Core (0.0.1):
+    - Flutter
+    - OrderedSet (~> 5.0)
+  - fluttertoast (0.0.2):
+    - Flutter
+    - Toast
+  - fluwx (0.0.1):
+    - Flutter
+    - fluwx/pay (= 0.0.1)
+  - fluwx/pay (0.0.1):
+    - Flutter
+    - WechatOpenSDK-XCFramework (~> 2.0.4)
+  - image_gallery_saver (2.0.2):
+    - Flutter
+  - image_picker_ios (0.0.1):
+    - Flutter
+  - OrderedSet (5.0.0)
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - permission_handler_apple (9.3.0):
+    - Flutter
+  - SDWebImage (5.19.1):
+    - SDWebImage/Core (= 5.19.1)
+  - SDWebImage/Core (5.19.1)
+  - SwiftyGif (5.4.5)
+  - Toast (4.1.1)
+  - url_launcher_ios (0.0.1):
+    - Flutter
+  - WechatOpenSDK-XCFramework (2.0.4)
+
+DEPENDENCIES:
+  - file_picker (from `.symlinks/plugins/file_picker/ios`)
+  - Flutter (from `Flutter`)
+  - flutter_inappwebview_ios (from `.symlinks/plugins/flutter_inappwebview_ios/ios`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
+  - fluwx (from `.symlinks/plugins/fluwx/ios`)
+  - image_gallery_saver (from `.symlinks/plugins/image_gallery_saver/ios`)
+  - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
+
+SPEC REPOS:
+  trunk:
+    - DKImagePickerController
+    - DKPhotoGallery
+    - OrderedSet
+    - SDWebImage
+    - SwiftyGif
+    - Toast
+    - WechatOpenSDK-XCFramework
+
+EXTERNAL SOURCES:
+  file_picker:
+    :path: ".symlinks/plugins/file_picker/ios"
+  Flutter:
+    :path: Flutter
+  flutter_inappwebview_ios:
+    :path: ".symlinks/plugins/flutter_inappwebview_ios/ios"
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
+  fluwx:
+    :path: ".symlinks/plugins/fluwx/ios"
+  image_gallery_saver:
+    :path: ".symlinks/plugins/image_gallery_saver/ios"
+  image_picker_ios:
+    :path: ".symlinks/plugins/image_picker_ios/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
+
+SPEC CHECKSUMS:
+  DKImagePickerController: a7836546cfdfe014171694f643a7d575bc8ace7f
+  DKPhotoGallery: acbd8a3bab19cf6e5fe64a853fc07bfbd247a8f6
+  file_picker: 09aa5ec1ab24135ccd7a1621c46c84134bfd6655
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_inappwebview_ios: 97215cf7d4677db55df76782dbd2930c5e1c1ea0
+  fluttertoast: 77ff8760d90ff5041a97e3d0c0ecaaa8472524d2
+  fluwx: daa284756ce53442b3d0417ceeda66e981906811
+  image_gallery_saver: cb43cc43141711190510e92c460eb1655cd343cb
+  image_picker_ios: b545a5f16c0fa88e3ecbbce3ed4de45567a8ec18
+  OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
+  path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
+  permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
+  SDWebImage: 40b0b4053e36c660a764958bff99eed16610acbb
+  SwiftyGif: 706c60cf65fa2bc5ee0313beece843c8eb8194d4
+  Toast: 1f5ea13423a1e6674c4abdac5be53587ae481c4e
+  url_launcher_ios: 6116280ddcfe98ab8820085d8d76ae7449447586
+  WechatOpenSDK-XCFramework: 36fb2bea0754266c17184adf4963d7e6ff98b69f
+
+PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
+
+COCOAPODS: 1.11.2
