@@ -5,7 +5,7 @@
 <img src="https://cos.bumishi.cn/APP-Startter-logo.png"
 </div>
 
-<div align="center"><h3 align="center"> 这是一个适用于任何类型项目的开发模板，可基于此项目快速开发业务可以作为新项目的启动模版！
+<div align="center"><h3 align="center"> 这是一个适用于任何类型项目的开发模板，可基于此项目快速开发业务可以作为新项目的启动模版，包含后端和flutter客户端以及管理后台！
 </h3></div>
 
 <div align="center"><h3 align="center">前后端分离架构，开箱即用，紧随前沿技术！</h3></div>
@@ -15,11 +15,12 @@
 
 ## 介绍
 本项目包含且只包含最基本的登录、注册、腾讯短信验证码、微信登录、用户中心、系统公告、系统配置、用户反馈、字典维护、后台权限管理相关的菜单、角色、用户、七牛云存储文件上传，这是任何项目都基本需要的基础功能。
-包含了后端api、VUE3管理后台前端、产品端uniapp(小程序+ios+android)、定时任务、代码生成器五个模块。
+
+包含了后端api、VUE3管理后台前端、产品端flutter(web+ios+android+桌面版)、uniapp(小程序+ios+android)、定时任务、代码生成器五个模块。
 
 - 后端语言为Python3,基于高性能异步IO协程,PC管理后台及后端项目基于[kinit](https://gitee.com/ktianc/kinit/tree/master)整合；
 - PC端采用 [vue-element-plus-admin 2.2.0](https://gitee.com/kailong110120130/vue-element-plus-admin) 、[Vue3](https://cn.vuejs.org/guide/introduction.html)、[Element Plus](https://element-plus.gitee.io/zh-CN/guide/design.html)、[TypeScript](https://www.tslang.cn/)等主流技术开发；
-- 移动端采用 [uni-app](https://uniapp.dcloud.net.cn/component/)，[Vue3](https://v3.cn.vuejs.org)，为主要技术开发,项目基于[shopro-uniapp](https://gitee.com/sheepjs/shopro-uniapp)整合；
+- 移动端采用flutter(主推)、 [uni-app](https://uniapp.dcloud.net.cn/component/)，[Vue3](https://v3.cn.vuejs.org)，为主要技术开发,项目基于[shopro-uniapp](https://gitee.com/sheepjs/shopro-uniapp)整合；
 - 已加入定时任务功能，采用 [APScheduler](https://github.com/agronholm/apscheduler) 定时任务框架 + [Redis](https://redis.io/)  消息队列 + [MongoDB](https://www.mongodb.com/) 持久存储；
 - 权限认证使用[（哈希）密码和 JWT Bearer 令牌的 OAuth2](https://fastapi.tiangolo.com/zh/tutorial/security/oauth2-jwt/)，支持多终端认证系统。
 - 支持加载动态权限菜单，多方式轻松权限控制，按钮级别权限控制。
